@@ -3,35 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Income Expense calculator</title>
+    <title>Income Expense Calculator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <div class="container">
-
-        <h1>Income Expense calculator</h1>
+        <h1>Income Expense Calculator</h1>
         <div class="summary">
-            <p>Total Income: <span id="total-income">$0</span></p>
-            <p>Total Expenses: <span id="total-expenses">$0</span></p>
-            <p>Net Balance: <span id="net-balance">$0</span></p>
+            <div>Total Income: <span id="total-income">₹0.00</span></div>
+            <div>Total Expenses: <span id="total-expenses">₹0.00</span></div>
+            <div>Net Balance: <span id="net-balance">₹0.00</span></div>
         </div>
-
-        <div class="filters">
-            <input type="radio" name="filter" value="all" checked> All
-            <input type="radio" name="filter" value="income"> Income
-            <input type="radio" name="filter" value="expense"> Expense
-        </div>
-
-        <div class="input-form">
+        <div class="form">
             <input type="text" id="description" placeholder="Description">
             <input type="number" id="amount" placeholder="Amount">
-            <button onclick="addEntry()">Add Entry</button>
-            <button onclick="resetFields()">Reset</button>
+            <select id="type">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+            <button id="add-entry">Add</button>
+            <button id="reset">Reset</button>
         </div>
-
-        <ul id="entries-list"></ul>
+        <div class="filters">
+            <label><input type="radio" name="filter" value="all" checked> All</label>
+            <label><input type="radio" name="filter" value="income"> Income</label>
+            <label><input type="radio" name="filter" value="expense"> Expense</label>
+        </div>
+        <div id="entries-list" class="entries"></div>
     </div>
-    <script src="script.js"></script> 
+    <script src="script.js"></script>
 </body>
 </html>

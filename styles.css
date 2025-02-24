@@ -1,46 +1,114 @@
-body{
+
+body {
     font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
     text-align: center;
-    margin: 20px;
-    
 }
 
 .container {
+    width: 100%;
     max-width: 500px;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    background: lightblue
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    
 }
-.summary p {
-    font-size: 18px;
+
+h1 {
+    text-align: center;
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.summary div {
+    font-size: 1.2em;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.form {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+button {
+    background: #28a745;
+    color: white;
     font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
 }
-.input-form {
-    margin-top: 10px;
+
+button:hover {
+    background: #218838;
 }
-input, button {
-    margin: 5px;
-    padding: 10px;
+
+
+.filters label {
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
 }
-ul {
-    list-style-type: none;
-    padding: 0;
+
+.entries {
+    border-top: 2px solid #ddd;
+    padding-top: 10px;
 }
-.entry {
+
+.entries .entry {
     display: flex;
     justify-content: space-between;
-    background: #f9f9f9;
+    align-items: center;
     padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 1em;
 }
-.delete-btn {
-    background-color: red;
+
+.entries .entry span {
+    flex-grow: 1;
+    font-size: 1em;
+    color: #333;
+}
+
+.entries .entry button {
+    padding: 6px 10px;
+    margin-left: 8px;
+    font-size: 0.9em;
+    background: #ff6347;
     color: white;
     border: none;
-    padding: 5px;
+    border-radius: 6px;
     cursor: pointer;
 }
+
+.entries .entry button:hover {
+    background: #d9534f;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 100%;
+    }
+}
+```
+

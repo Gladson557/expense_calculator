@@ -1,35 +1,72 @@
 let entries = JSON.parse(localStorage.getItem('entries')) || [];
-let editingId = null;
+let editId = null;
+
+const descriptionInput = document.getElementById('description');
+const amountInput = document.getElementById('amount');
+const typeSelect = document.getElementById('type');
+const entriesList = document.getElementById('entries-list');
+const totalIncomeDisplay = document.getElementById('total-income');
+const totalExpensesDisplay = document.getElementById('total-expenses');
+const netBalanceDisplay = document.getElementById('net-balance');
 
 function addEntry() {
-    const description = document.getElementById('description').value;
-    let amount = parseFloat(document.getElementById('amount').value);
-    if (!description || isNaN(amount)) return;
+    const description = descriptionInput.value.trim();
+    const amount = parseFloat(amountInput.value);
+    const type = typeSelect.value;
 
-    const isExpense = document.querySelector('input[name="filter"]:checked').value === 'expense';
-    amount = isExpense && amount > 0 ? -amount : amount;
+    if (!description || isNaN(amount) || amount <= 0) return;
 
-    if (editingId !== null) {
-        const index = entries.findIndex(entry => entry.id === editingId);
-        if (index !== -1) {
-            entries[index].description = description;
-            entries[index].amount = amount;
-            editingId = null;
-        }
+    if (editId !== null) {
+        const entry = entries.find(entry => entry.id === editId);
+        entry.description = description;
+        entry.amount = amount;
+        entry.type = type;
+        editId = null;
     } else {
-        const entry = { description, amount, id: Date.now() };
-        entries.push(entry);
+        entries.push({ id: Date.now(), description, amount, type });
     }
 
     updateLocalStorage();
     displayEntries();
-    resetFields();
+    resetForm();
 }
 
-function resetFields() {
-    document.getElementById('description').value = '';
-    document.getElementById('amount').value = '';
-    editingId = null;
+function displayEntries(filter = 'all') {
+    entriesList.innerHTML = '';
+
+    const filteredEntries = filter === 'all' ? entries : entries.filter(entry => entry.type === filter);
+
+    let totalIncome = 0;
+    let totalExpenses = 0;
+
+    filteredEntries.forEach(entry => {
+        const entryElement = document.createElement('div');
+        entryElement.className = 'entry';
+        entryElement.innerHTML = `
+            <span>${entry.description}: ₹${entry.amount.toFixed(2)}</span>
+            <button onclick="editEntry(${entry.id})">Edit</button>
+            <button onclick="deleteEntry(${entry.id})">Delete</button>
+        `;
+        entriesList.appendChild(entryElement);
+
+        if (entry.type === 'income') {
+            totalIncome += entry.amount;
+        } else {
+            totalExpenses += entry.amount;
+        }
+    });
+
+    totalIncomeDisplay.textContent = `₹${totalIncome.toFixed(2)}`;
+    totalExpensesDisplay.textContent = `₹${totalExpenses.toFixed(2)}`;
+    netBalanceDisplay.textContent = `₹${(totalIncome - totalExpenses).toFixed(2)}`;
+}
+
+function editEntry(id) {
+    const entry = entries.find(entry => entry.id === id);
+    descriptionInput.value = entry.description;
+    amountInput.value = entry.amount;
+    typeSelect.value = entry.type;
+    editId = id;
 }
 
 function deleteEntry(id) {
@@ -38,38 +75,26 @@ function deleteEntry(id) {
     displayEntries();
 }
 
-function editEntry(id) {
-    const entry = entries.find(entry => entry.id === id);
-    if (entry) {
-        document.getElementById('description').value = entry.description;
-        document.getElementById('amount').value = Math.abs(entry.amount);
-        editingId = id;
-    }
-}
-
 function updateLocalStorage() {
     localStorage.setItem('entries', JSON.stringify(entries));
 }
 
-function displayEntries() {
-    const list = document.getElementById('entries-list');
-    list.innerHTML = '';
-    let totalIncome = 0;
-    let totalExpenses = 0;
-    entries.forEach(entry => {
-        const li = document.createElement('li');
-        li.classList.add('entry');
-        li.innerHTML = `${entry.description}: ₹${entry.amount} <button class="edit-btn" onclick="editEntry(${entry.id})">Edit</button> <button class="delete-btn" onclick="deleteEntry(${entry.id})">Delete</button>`;
-        list.appendChild(li);
-        if (entry.amount > 0) {
-            totalIncome += entry.amount;
-        } else {
-            totalExpenses += Math.abs(entry.amount);
-        }
-    });
-    document.getElementById('total-income').textContent = `₹${totalIncome.toFixed(2)}`;
-    document.getElementById('total-expenses').textContent = `₹${totalExpenses.toFixed(2)}`;
-    document.getElementById('net-balance').textContent = `₹${(totalIncome - totalExpenses).toFixed(2)}`;
+function resetForm() {
+    descriptionInput.value = '';
+    amountInput.value = '';
+    typeSelect.value = 'income';
+    editId = null;
 }
 
-displayEntries();
+function filterEntries(filter) {
+    displayEntries(filter);
+}
+
+window.onload = () => {
+    document.getElementById('add-entry').addEventListener('click', addEntry);
+    document.getElementById('reset').addEventListener('click', resetForm);
+    document.querySelectorAll('input[name="filter"]').forEach(radio => {
+        radio.addEventListener('change', (e) => filterEntries(e.target.value));
+    });
+    displayEntries();
+};
