@@ -1,0 +1,27 @@
+# Income Expense Calculator
+
+## Overview
+This project is a simple Income Expense Calculator built using HTML, CSS, and JavaScript. It allows users to add, edit, and delete income and expense entries while displaying the total income, total expenses, and net balance. The data is stored locally using local storage, ensuring that entries persist across sessions.
+
+## Features
+- **Add Entries:** Input fields for entering description and amount.
+- **Edit Entries:** Update existing entries directly from the list.
+- **Delete Entries:** Remove unwanted entries with a single click.
+- **Filter Entries:** View all, income-only, or expense-only entries using radio buttons.
+- **Local Storage:** Automatically saves and loads data to and from the browser’s local storage.
+- **Responsive Design:** Works well on both desktop and mobile devices.
+
+## Technologies Used
+- **HTML:** Structure of the application.
+- **CSS:** Styling for a clean and intuitive layout.
+- **JavaScript:** Functionality for CRUD operations and local storage.
+
+## Usage
+1. Open the application in your browser.
+2. Enter the description and amount, then click **Add Entry**.
+3. To edit an entry, click the **Edit** button. The entry will populate the input fields,      where you can update and save it.
+4. To delete an entry, click the **Delete** button.
+5. Use the **All**, **Income**, or **Expense** radio buttons to filter the list.
+6. Reset the input fields using the **Reset** button.
+
+

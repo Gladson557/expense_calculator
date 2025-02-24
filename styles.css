@@ -1,0 +1,46 @@
+body{
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+    
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    background: lightblue
+}
+.summary p {
+    font-size: 18px;
+    font-weight: bold;
+}
+.input-form {
+    margin-top: 10px;
+}
+input, button {
+    margin: 5px;
+    padding: 10px;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+.entry {
+    display: flex;
+    justify-content: space-between;
+    background: #f9f9f9;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+.delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
