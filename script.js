@@ -1,18 +1,23 @@
+
+// Updated JavaScript for Income Expense Calculator with fully functional filters and local storage
+
 let entries = JSON.parse(localStorage.getItem('entries')) || [];
 let editId = null;
+let currentFilter = 'all';
 
 const descriptionInput = document.getElementById('description');
 const amountInput = document.getElementById('amount');
-const typeSelect = document.getElementById('type');
+const typeInput = document.getElementById('type');
 const entriesList = document.getElementById('entries-list');
 const totalIncomeDisplay = document.getElementById('total-income');
 const totalExpensesDisplay = document.getElementById('total-expenses');
 const netBalanceDisplay = document.getElementById('net-balance');
 
+// Function to add or edit an entry
 function addEntry() {
     const description = descriptionInput.value.trim();
     const amount = parseFloat(amountInput.value);
-    const type = typeSelect.value;
+    const type = typeInput.value;
 
     if (!description || isNaN(amount) || amount <= 0) return;
 
@@ -27,17 +32,27 @@ function addEntry() {
     }
 
     updateLocalStorage();
-    displayEntries();
+    displayEntries(currentFilter);
     resetForm();
 }
 
+// Function to display entries with optional filter
 function displayEntries(filter = 'all') {
     entriesList.innerHTML = '';
+    currentFilter = filter;
 
     const filteredEntries = filter === 'all' ? entries : entries.filter(entry => entry.type === filter);
 
     let totalIncome = 0;
     let totalExpenses = 0;
+
+    entries.forEach(entry => {
+        if (entry.type === 'income') {
+            totalIncome += entry.amount;
+        } else {
+            totalExpenses += entry.amount;
+        }
+    });
 
     filteredEntries.forEach(entry => {
         const entryElement = document.createElement('div');
@@ -48,12 +63,6 @@ function displayEntries(filter = 'all') {
             <button onclick="deleteEntry(${entry.id})">Delete</button>
         `;
         entriesList.appendChild(entryElement);
-
-        if (entry.type === 'income') {
-            totalIncome += entry.amount;
-        } else {
-            totalExpenses += entry.amount;
-        }
     });
 
     totalIncomeDisplay.textContent = `₹${totalIncome.toFixed(2)}`;
@@ -61,35 +70,41 @@ function displayEntries(filter = 'all') {
     netBalanceDisplay.textContent = `₹${(totalIncome - totalExpenses).toFixed(2)}`;
 }
 
+// Function to edit an existing entry
 function editEntry(id) {
     const entry = entries.find(entry => entry.id === id);
     descriptionInput.value = entry.description;
     amountInput.value = entry.amount;
-    typeSelect.value = entry.type;
+    typeInput.value = entry.type;
     editId = id;
 }
 
+// Function to delete an entry
 function deleteEntry(id) {
     entries = entries.filter(entry => entry.id !== id);
     updateLocalStorage();
-    displayEntries();
+    displayEntries(currentFilter);
 }
 
+// Function to update local storage
 function updateLocalStorage() {
     localStorage.setItem('entries', JSON.stringify(entries));
 }
 
+// Function to reset the input form
 function resetForm() {
     descriptionInput.value = '';
     amountInput.value = '';
-    typeSelect.value = 'income';
+    typeInput.value = 'income';
     editId = null;
 }
 
+// Function to filter entries
 function filterEntries(filter) {
     displayEntries(filter);
 }
 
+// Event listeners
 window.onload = () => {
     document.getElementById('add-entry').addEventListener('click', addEntry);
     document.getElementById('reset').addEventListener('click', resetForm);
@@ -98,3 +113,5 @@ window.onload = () => {
     });
     displayEntries();
 };
+
+
